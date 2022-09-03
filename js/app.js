@@ -4,7 +4,6 @@ fetch('https://openapi.programming-hero.com/api/news/categories')
     .catch(error => console.log(error))
 
 const displayCategories = categories => {
-    console.log(categories);
     const allCategories = document.getElementById('categories');
 
     categories.forEach(category => {
@@ -12,7 +11,6 @@ const displayCategories = categories => {
         categoryList.innerHTML = `
             <p class="category" onclick="displayNews('${category.category_id}','${category.category_name}')">${category.category_name}</p>
         `
-
         allCategories.appendChild(categoryList)
     });
 
@@ -47,8 +45,6 @@ const showNews = (news, categoryName) => {
     `
     totalNumNewsShowField.appendChild(totalNumNewsDiv);
 
-
-    console.log(news)
     const newsField = document.getElementById('news-container');
     newsField.innerText = '';
     const sortedNewsByView = news.sort((x,y)=>y.total_view - x.total_view);
