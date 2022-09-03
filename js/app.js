@@ -56,10 +56,11 @@ const showNews = (news, categoryName) => {
         const newsDiv = document.createElement('div');
         newsDiv.classList.add('row');
         newsDiv.classList.add('align-items-center');
-        newsDiv.classList.add('mb-3');
         newsDiv.classList.add('bg-white');
-        newsDiv.classList.add('p-2');
         newsDiv.classList.add('rounded');
+        newsDiv.classList.add('mb-4');
+        newsDiv.classList.add('p-2');
+        newsDiv.classList.add('shadow');
         newsDiv.innerHTML = `
                 <div class="card mb-3 border-0">
                     <div class="row align-items-center g-0">
@@ -79,9 +80,9 @@ const showNews = (news, categoryName) => {
                                     </div>
                                 </div>
 
-                                <div ><i class="fa-regular fa-eye"></i>${singleNews.total_view?singleNews.total_view:"Not found"}</div>
+                                <div ><i class="fa-regular fa-eye me-1"></i>${singleNews.total_view?singleNews.total_view:"Not found"}</div>
 
-                                <div ><button class="btn border-0 text-primary data-bs-toggle="modal" data-bs-target="#newsDetailModal""><i class="fa-solid fa-arrow-right"></i></button></div>
+                                <div class="text-primary"><button class="btn border-0" data-bs-toggle="modal" data-bs-target="#newsDetailsModal" onclick="loadNewsDetails('${singleNews._id}')"><i class="fa-solid fa-arrow-right"></i></button></div>
                             </div>
                         </div>
                     </div>
@@ -90,4 +91,36 @@ const showNews = (news, categoryName) => {
         newsField.appendChild(newsDiv);
     })
     toggleSpinner(false);
+}
+
+const loadNewsDetails = newsId => {
+    fetch(`https://openapi.programming-hero.com/api/news/${newsId}`)
+        .then(res => res.json())
+        .then(data => displayNewsOnModal(data.data[0]))
+        .catch(error => console.log(error))
+}
+
+const displayNewsOnModal = news => {
+    const modalCard = document.getElementById('modal-card')
+    modalCard.innerHTML = `
+    <img src="${news.image_url}" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h6 class="card-text fw-semibold">${news.title}</h6>
+        <p class="card-text text-secondary">${news.details}</p>
+        <div class ="w-50">
+             <img src="${news.author.img ? news.author.img : 'Author image not found'}" class="img-fluid rounded-circle m-2" alt="...">
+            <div class="mb-3">
+                 <span class="category-font-size d-block">${news.author.name ? news.author.name : "Author name not found"}</span>
+                <span class="text-secondary">${news.author.published_date ? news.author.published_date : "Published date not found"}</span>
+             </div>
+         </div>
+         <div>
+            <i class="fa-solid fa-eye"></i> <span class="text-secondary">${news.total_view ? news.total_view : "0"}</span>
+         </div>
+         <div>
+             <span class="text-secondary">${news.rating.number}</span>
+             <span class="text-secondary">${news.rating.badge}</span>
+        </div>
+    </div>
+    `
 }
