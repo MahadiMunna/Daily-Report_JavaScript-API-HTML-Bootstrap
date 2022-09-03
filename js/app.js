@@ -1,27 +1,45 @@
 fetch('https://openapi.programming-hero.com/api/news/categories')
-.then(res=>res.json())
-.then(data=>displayCategories(data.data.news_category))
+    .then(res => res.json())
+    .then(data => displayCategories(data.data.news_category))
 
-const displayCategories = categories =>{
+const displayCategories = categories => {
     console.log(categories);
     const allCategories = document.getElementById('categories');
-    
+
     categories.forEach(category => {
         console.log(category.category_name)
+        console.log(category.category_id)
         const categoryList = document.createElement('div');
         categoryList.innerHTML = `
-            <p>${category.category_name}</p>
+            <p onclick="displayNews('${category.category_id}','${category.category_name}')">${category.category_name}</p>
         `
+        
         allCategories.appendChild(categoryList)
     });
 }
 
-fetch('https://openapi.programming-hero.com/api/news/category/01')
-.then(res => res.json())
-.then(data => displayNews(data.data))
 
-const displayNews = allNews =>{
-    console.log(allNews)
+
+const displayNews = async(categoryId,categoryName) => {
+    const url = `https://openapi.programming-hero.com/api/news/category/${categoryId}`
+    const res = await fetch(url)
+    const data = await res.json()
+    showNews(data.data,categoryName);
+}
+
+const showNews = (news,categoryName)=>{
+    const newsLength = news.length;
+    const totalNumNewsShowField = document.getElementById('total-num-news-show');
+    totalNumNewsShowField.innerText = '';
+    const totalNumNewsDiv = document.createElement('div');
+    // totalNumNewsDiv.classList.add('')
+    totalNumNewsDiv.innerHTML =`
+        <p class="p-4 fw-bold">${newsLength} items found for category ${categoryName}</p>
+    `
+    totalNumNewsShowField.appendChild(totalNumNewsDiv);
+
+    
+    console.log(news)
     const newsField = document.getElementById('news-container');
 
     allNews.forEach = news =>{
