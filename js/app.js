@@ -10,7 +10,7 @@ const displayCategories = categories => {
     categories.forEach(category => {
         const categoryList = document.createElement('div');
         categoryList.innerHTML = `
-            <p onclick="displayNews('${category.category_id}','${category.category_name}')">${category.category_name}</p>
+            <p class="category" onclick="displayNews('${category.category_id}','${category.category_name}')">${category.category_name}</p>
         `
 
         allCategories.appendChild(categoryList)
@@ -43,7 +43,7 @@ const showNews = (news, categoryName) => {
     const totalNumNewsDiv = document.createElement('div');
     totalNumNewsDiv.classList.add('shadow')
     totalNumNewsDiv.innerHTML = `
-        <p class="p-4 fw-bold">${newsLength} items found for category ${categoryName}</p>
+        <p class="p-4 fw-bold">${newsLength} news found for category ${categoryName}</p>
     `
     totalNumNewsShowField.appendChild(totalNumNewsDiv);
 
