@@ -1,6 +1,7 @@
 fetch('https://openapi.programming-hero.com/api/news/categories')
     .then(res => res.json())
     .then(data => displayCategories(data.data.news_category))
+    .catch(error => console.log(error))
 
 const displayCategories = categories => {
     console.log(categories);
@@ -40,6 +41,7 @@ const showNews = (news, categoryName) => {
     const totalNumNewsShowField = document.getElementById('total-num-news-show');
     totalNumNewsShowField.innerText = '';
     const totalNumNewsDiv = document.createElement('div');
+    totalNumNewsDiv.classList.add('shadow')
     totalNumNewsDiv.innerHTML = `
         <p class="p-4 fw-bold">${newsLength} items found for category ${categoryName}</p>
     `
@@ -54,13 +56,7 @@ const showNews = (news, categoryName) => {
     sortedNewsByView.forEach(singleNews => {
 
         const newsDiv = document.createElement('div');
-        newsDiv.classList.add('row');
-        newsDiv.classList.add('align-items-center');
-        newsDiv.classList.add('bg-white');
-        newsDiv.classList.add('rounded');
-        newsDiv.classList.add('mb-4');
-        newsDiv.classList.add('p-2');
-        newsDiv.classList.add('shadow');
+        newsDiv.classList.add('row','align-items-center','bg-white','rounded','shadow','p-2','mb-4');
         newsDiv.innerHTML = `
                 <div class="card mb-3 border-0">
                     <div class="row align-items-center g-0">
@@ -74,14 +70,13 @@ const showNews = (news, categoryName) => {
                             </div>
                             <div class="d-lg-flex justify-content-between align-items-center">
                                 <div class="d-lg-flex align-items-center w-50">
-                                    <img class="img-fluid rounded-circle w-25 me-3" style="size:25%;" src="${singleNews.author.img?singleNews.author.img:"Author image not found"}" class="card-img-top" alt="...">
+                                    <img class="img-fluid rounded-circle w-25 me-3" src="${singleNews.author.img?singleNews.author.img:"Author image not found"}" class="card-img-top" alt="...">
                                     <div class="ms-2>
-                                    <span class="d-block text-sm fw-semibold">${singleNews.author.name?singleNews.author.name:"Author name not found"}</span><span class="d-block">${singleNews.author.published_date?singleNews.author.published_date:"Published date not found"}</span>
+                                        <span class="d-block text-sm"><b>${singleNews.author.name?singleNews.author.name:"Author name not found"}</b></span>
+                                        <span class="d-block text-sm text-secondary">${singleNews.author.published_date?singleNews.author.published_date:"Published date not found"}</span>
                                     </div>
                                 </div>
-
-                                <div ><i class="fa-regular fa-eye me-1"></i>${singleNews.total_view?singleNews.total_view:"Not found"}</div>
-
+                                <div class="fw-bold"><i class="fa-regular fa-eye me-1"></i>${singleNews.total_view?singleNews.total_view:"Not found"}</div>
                                 <div class="text-primary"><button class="btn border-0" data-bs-toggle="modal" data-bs-target="#newsDetailsModal" onclick="loadNewsDetails('${singleNews._id}')"><i class="fa-solid fa-arrow-right"></i></button></div>
                             </div>
                         </div>
